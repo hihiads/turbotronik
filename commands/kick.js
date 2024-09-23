@@ -1,25 +1,18 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('kick')
-        .setDescription('Kick korisnika sa servera.')
-        .addUserOption(option => option.setName('target').setDescription('Korisnik koji treba biti kickovan').setRequired(true))
-        .addStringOption(option => option.setName('reason').setDescription('Razlog kickovanja')),
-    async execute(interaction) {
-        const target = interaction.options.getUser('target');
-        const reason = interaction.options.getString('reason') || 'Nema razloga';
+    name: 'kick',
+    description: 'Izbacuje člana sa servera.',
+    async execute(message, args) {
+        if (!message.member.permissions.has('KICK_MEMBERS')) return message.reply('Nemaš dozvolu za to!');
+        
+        const member = message.mentions.members.first();
+        if (!member) return message.reply('Moraš označiti člana kojeg želiš izbaciti.');
 
-        if (!interaction.member.permissions.has('KICK_MEMBERS')) {
-            return interaction.reply('Nemaš dozvolu za ovu komandu.');
+        try {
+            await member.kick();
+            message.reply(`${member.user.tag} je izbačen.`);
+        } catch (err) {
+            message.reply('Ne mogu izbaciti ovog člana.');
+            console.error(err);
         }
-
-        const member = interaction.guild.members.resolve(target);
-        if (member) {
-            await member.kick(reason);
-            await interaction.reply(`${target.tag} je kickovan zbog: ${reason}`);
-        } else {
-            await interaction.reply('Korisnik nije pronađen ili nije moguće kickovati.');
-        }
-    },
+    }
 };
