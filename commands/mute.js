@@ -1,23 +1,21 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('mute')
-        .setDescription('Mute korisnika.')
-        .addUserOption(option => option.setName('target').setDescription('Korisnik koji treba biti mutiran').setRequired(true)),
-    async execute(interaction) {
-        const target = interaction.options.getUser('target');
-        const member = interaction.guild.members.resolve(target);
+    name: 'mute',
+    description: 'Mute-uje člana na serveru.',
+    async execute(message, args) {
+        if (!message.member.permissions.has('MANAGE_ROLES')) return message.reply('Nemaš dozvolu za to!');
 
-        if (!interaction.member.permissions.has('MUTE_MEMBERS')) {
-            return interaction.reply('Nemaš dozvolu za ovu komandu.');
-        }
+        const member = message.mentions.members.first();
+        const muteRole = message.guild.roles.cache.find(role => role.name === 'Muted');
+        if (!muteRole) return message.reply('Nema role "Muted".');
 
-        if (member) {
-            await member.voice.setMute(true);
-            await interaction.reply(`${target.tag} je mutiran.`);
-        } else {
-            await interaction.reply('Korisnik nije pronađen ili nije moguće mutirati.');
+        if (!member) return message.reply('Moraš označiti člana kojeg želiš mute-ovati.');
+
+        try {
+            await member.roles.add(muteRole);
+            message.reply(`${member.user.tag} je mute-ovan.`);
+        } catch (err) {
+            message.reply('Ne mogu mute-ovati ovog člana. ');
+            console.error(err);
         }
-    },
+    }
 };
