@@ -1,15 +1,16 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('unlock')
-        .setDescription('Otključava kanal.'),
-    async execute(interaction) {
-        if (!interaction.member.permissions.has('MANAGE_CHANNELS')) {
-            return interaction.reply('Nemaš dozvolu za ovu komandu.');
-        }
+    name: 'unlock',
+    description: 'Otključava kanal.',
+    async execute(message, args) {
+        if (!message.member.permissions.has('MANAGE_CHANNELS')) return message.reply('Nemaš dozvolu za to!');
 
-        await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, { SEND_MESSAGES: true });
-        await interaction.reply('Kanal je otključan.');
-    },
+        const channel = message.channel;
+        try {
+            await channel.permissionOverwrites.edit(message.guild.roles.everyone, { SEND_MESSAGES: true });
+            message.reply('Kanal je otključan.');
+        } catch (err) {
+            message.reply('Ne mogu otključati kanal.');
+            console.error(err);
+        }
+    }
 };
