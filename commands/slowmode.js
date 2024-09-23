@@ -1,18 +1,18 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('slowmode')
-        .setDescription('Postavlja slowmode na kanalu.')
-        .addIntegerOption(option => option.setName('seconds').setDescription('Vreme u sekundama').setRequired(true)),
-    async execute(interaction) {
-        const seconds = interaction.options.getInteger('seconds');
+    name: 'slowmode',
+    description: 'Postavlja slowmode za kanal.',
+    async execute(message, args) {
+        if (!message.member.permissions.has('MANAGE_CHANNELS')) return message.reply('Nemaš dozvolu za to!');
 
-        if (!interaction.member.permissions.has('MANAGE_CHANNELS')) {
-            return interaction.reply('Nemaš dozvolu za ovu komandu.');
+        const seconds = parseInt(args[0]);
+        if (isNaN(seconds) || seconds < 0) return message.reply('Moraš navesti validan broj sekundi.');
+
+        try {
+            await message.channel.setRateLimitPerUser(seconds);
+            message.reply(`Slowmode je postavljen na ${seconds} sekundi.`);
+        } catch (err) {
+            message.reply('Ne mogu postaviti slowmode.');
+            console.error(err);
         }
-
-        await interaction.channel.setRateLimitPerUser(seconds);
-        await interaction.reply(`Slowmode je postavljen na ${seconds} sekundi.`);
-    },
+    }
 };
