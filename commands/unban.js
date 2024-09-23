@@ -1,22 +1,18 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('unban')
-        .setDescription('Uklanja ban korisniku.')
-        .addStringOption(option => option.setName('userid').setDescription('ID korisnika za unban').setRequired(true)),
-    async execute(interaction) {
-        const userId = interaction.options.getString('userid');
+    name: 'unban',
+    description: 'Unban-uje člana sa servera.',
+    async execute(message, args) {
+        if (!message.member.permissions.has('BAN_MEMBERS')) return message.reply('Nemaš dozvolu za to!');
 
-        if (!interaction.member.permissions.has('BAN_MEMBERS')) {
-            return interaction.reply('Nemaš dozvolu za ovu komandu.');
-        }
+        const userId = args[0];
+        if (!userId) return message.reply('Moraš navesti ID korisnika kojeg želiš unbanovati.');
 
         try {
-            await interaction.guild.members.unban(userId);
-            await interaction.reply(`Korisnik sa ID ${userId} je unbanovan.`);
-        } catch (error) {
-            await interaction.reply(`Došlo je do greške: ${error.message}`);
+            await message.guild.members.unban(userId);
+            message.reply(`Korisnik sa ID-em ${userId} je odbanovan.`);
+        } catch (err) {
+            message.reply('Ne mogu unbanovati ovog korisnika.');
+            console.error(err);
         }
-    },
+    }
 };
