@@ -88,5 +88,14 @@ client.on('messageCreate', message => {
         message.reply(`Vratio/la si se, nisi više AFK! Bio si AFK ${afkDuration} minuta.`);
     }
 });
+const app = require('express')();
+
+app.get('/', async (req,res) => {
+  res.send('Hello');
+});
+
+app.listen(3000, async () => {
+ console.log('Listening on port 3000');
+});
 // Login bota
 client.login(process.env.token)
