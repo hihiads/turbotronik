@@ -19,7 +19,7 @@ module.exports = {
         console.log('Registrovanje komandi:', commands.map(command => command.name));
 
 
-        const rest = new REST({ version: '9' }).setToken('MTI4Njc4Njc3MDc2NzMxNTAwNg.GLSohG.ltC0M16CNQ_jFltP_PpFbVAmdsMbD1XvoX0ljE');
+        const rest = new REST({ version: '9' }).setToken('');
 
         try {
             console.log('Počinje osvježavanje (/) komandi...');
