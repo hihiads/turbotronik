@@ -1,23 +1,21 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('unmute')
-        .setDescription('Uklanja mute korisniku.')
-        .addUserOption(option => option.setName('target').setDescription('Korisnik koji treba biti unmutiran').setRequired(true)),
-    async execute(interaction) {
-        const target = interaction.options.getUser('target');
-        const member = interaction.guild.members.resolve(target);
+    name: 'unmute',
+    description: 'Uklanja mute sa člana.',
+    async execute(message, args) {
+        if (!message.member.permissions.has('MANAGE_ROLES')) return message.reply('Nemaš dozvolu za to!');
 
-        if (!interaction.member.permissions.has('MUTE_MEMBERS')) {
-            return interaction.reply('Nemaš dozvolu za ovu komandu.');
-        }
+        const member = message.mentions.members.first();
+        const muteRole = message.guild.roles.cache.find(role => role.name === 'Muted');
+        if (!muteRole) return message.reply('Nema role "Muted".');
 
-        if (member) {
-            await member.voice.setMute(false);
-            await interaction.reply(`${target.tag} je unmutiran.`);
-        } else {
-            await interaction.reply('Korisnik nije pronađen ili nije moguće unmutirati.');
+        if (!member) return message.reply('Moraš označiti člana kojem želiš ukloniti mute.');
+
+        try {
+            await member.roles.remove(muteRole);
+            message.reply(`${member.user.tag} više nije mute-ovan.`);
+        } catch (err) {
+            message.reply('Ne mogu ukloniti mute sa ovog člana.');
+            console.error(err);
         }
-    },
+    }
 };
