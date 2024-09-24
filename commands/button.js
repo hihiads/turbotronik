@@ -2,7 +2,7 @@ const { MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
     name: 'button',
-    description: 'Igra: Pritisnite gumb što više puta u 0 sekundi!',
+    description: 'Igra: Pritisni gumb što više puta u 60 sekundi!',
     async execute(message, args) {
         // Kreiraj novi gumb
         const button = new MessageButton()
@@ -15,7 +15,7 @@ module.exports = {
 
         // Pošalji početnu poruku s gumbom
         const msg = await message.channel.send({
-            content: 'Koliko puta možeš pritisnuti gumb u 0 sekundi?',
+            content: 'Koliko puta možeš pritisnuti gumb u 60 sekundi?',
             components: [row],
         });
 
@@ -23,7 +23,7 @@ module.exports = {
 
         // Kreiraj collector za prikupljanje klikova na gumb
         const filter = (interaction) => interaction.customId === 'button_click';
-        const collector = msg.createMessageComponentCollector({ filter, time: 1000 }); // 1 sekunda za klikanje
+        const collector = msg.createMessageComponentCollector({ filter, time: 60000 }); // 60 sekundi za klikanje
 
         collector.on('collect', (interaction) => {
             count++;
