@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('kick')
-        .setDescription('Kick a user from the server.')
+        .setDescription('Kika korisnika sa servera.')
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('The user to kick')
