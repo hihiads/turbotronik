@@ -34,19 +34,19 @@ module.exports = {
                 .setDescription(weatherDescription.charAt(0).toUpperCase() + weatherDescription.slice(1))
                 .setColor('#00aaff')
                 .addFields(
-                    { name: 'Temperature', value: `${temp}°C`, inline: true },
-                    { name: 'Feels Like', value: `${feelsLike}°C`, inline: true },
-                    { name: 'Humidity', value: `${humidity}%`, inline: true },
-                    { name: 'Wind Speed', value: `${windSpeed} m/s`, inline: true }
+                    { name: 'Temperatura', value: `${temp}°C`, inline: true },
+                    { name: 'Osjeća se kao', value: `${feelsLike}°C`, inline: true },
+                    { name: 'Vlažnost', value: `${humidity}%`, inline: true },
+                    { name: 'Brzina vjetra', value: `${windSpeed} m/s`, inline: true }
                 )
-                .setFooter("SnagaPiksela and SD Studio Teams")
+                .setFooter("SnagaPiksela and Turbotronik team")
                 .setTimestamp();
 
             // Šaljemo embed poruku na Discord kanal
             message.channel.send({ embeds: [weatherEmbed] });
         } catch (error) {
             console.error(error);
-            message.channel.send('Could not retrieve weather data. Please make sure the city name is correct.');
+            message.channel.send('Ne mogu povući podatke o tom gradu! Molim te provjeri jesi li dobro napisao/la.');
         }
     },
 };
