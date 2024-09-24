@@ -6,33 +6,31 @@ module.exports = {
     name: 'ready',
     once: true,
     async execute(client) {
-        console.log(`Ulogovan kao ${client.user.tag}!`);
+        console.log(`Logged in as ${client.user.tag}!`);
 
         const commands = [];
-        const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+        const slashCommandFiles = fs.readdirSync('./slashcommands').filter(file => file.endsWith('.js'));
 
-        // Učitavanje svih komandi u format potreban za Discord API
-        for (const file of commandFiles) {
-            const command = require(`../commands/${file}`);
+        // Učitavanje svih slash komandi u format potreban za Discord API
+        for (const file of slashCommandFiles) {
+            const command = require(`../slashcommands/${file}`);
             commands.push(command.data.toJSON());
         }
-        console.log('Registrovanje komandi:', commands.map(command => command.name));
 
-
-        const rest = new REST({ version: '9' }).setToken('');
+        const rest = new REST({ version: '9' }).setToken(process.env.token); // Zamenite sa pravim tokenom
 
         try {
-            console.log('Počinje osvježavanje (/) komandi...');
+            console.log('Refresam slash komande...');
 
-            // Registrovanje slash komandi za jedan guild (za razvoj)
+            // Registrovanje globalnih komandi
             await rest.put(
-                Routes.applicationGuildCommands(client.user.id, '1278768641554387014'),
+                Routes.applicationCommands(client.user.id),
                 { body: commands },
             );
 
-            console.log('(/) komande su uspešno registrovane.');
+            console.log('Slash komande su registrirane.');
         } catch (error) {
-            console.error('Greška prilikom registracije komandi:', error);
+            console.error('Error pišonja 23708:', error);
         }
     },
 };
