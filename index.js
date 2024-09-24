@@ -23,9 +23,11 @@ for (const file of commandFiles) {
 }
 
 // Event listener za kada bot bude spreman
-client.once('ready', () => {
+client.on('ready', () => {
     console.log(`Prijavljen kao ${client.user.tag}`);
-    client.user.setActivitiy("!help | snagapiksela.net");
+
+    // Postavi status
+    client.user.setActivity('!help | snagapiksela.net', { type: 'PLAYING' });
 });
 
 // Event listener za poruke
