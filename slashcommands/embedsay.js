@@ -4,18 +4,18 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('embedsay')
-        .setDescription('Repeats the message you send in an embed with optional title and color.')
+        .setDescription('Ponavlja riječ u embedu.')
         .addStringOption(option => 
             option.setName('description')
-                .setDescription('The message to embed')
+                .setDescription('Poruka u embedu')
                 .setRequired(true)) // Obavezna opcija
         .addStringOption(option => 
             option.setName('title')
-                .setDescription('The title of the embed')
+                .setDescription('Title od embeda.')
                 .setRequired(false)) // Neobavezna opcija
         .addStringOption(option => 
             option.setName('color')
-                .setDescription('The color of the embed in hex format (e.g. #ff0000)')
+                .setDescription('Boja u hex formatu (e.g. #ff0000)')
                 .setRequired(false)), // Neobavezna opcija
     async execute(interaction) {
         const title = interaction.options.getString('title');
