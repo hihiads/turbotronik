@@ -3,31 +3,31 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ban')
-        .setDescription('Ban a user from the server.')
+        .setDescription('Banuje korisnika sa servera.')
         .addUserOption(option =>
             option.setName('user')
-                .setDescription('The user to ban')
+                .setDescription('Korisnik kojeg želiš banovati.')
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('reason')
-                .setDescription('The reason for the ban')),
+                .setDescription('Razlog bana.')),
 
     async execute(interaction) {
         const user = interaction.options.getUser('user');
-        const reason = interaction.options.getString('reason') || 'No reason provided';
+        const reason = interaction.options.getString('reason') || 'Nema razloga.';
         const member = await interaction.guild.members.fetch(user.id);
 
         if (!member) {
-            return interaction.reply({ content: 'User not found in this guild.', ephemeral: true });
+            return interaction.reply({ content: 'Korisnik nije pronađen u ovom serveru.', ephemeral: true });
         }
 
         try {
             await member.ban({ reason });
-            await interaction.reply(`Banned **${user.tag}** for: ${reason}`);
-            await user.send(`You have been banned from **${interaction.guild.name}** for: ${reason}`);
+            await interaction.reply(`Banao sam **${user.tag}** za: ${reason}`);
+            await user.send(`Banan si u serveru: **${interaction.guild.name}** iz razloga: ${reason}`);
         } catch (error) {
             console.error(error);
-            await interaction.reply({ content: 'There was an error trying to ban this user.', ephemeral: true });
+            await interaction.reply({ content: 'Error!.', ephemeral: true });
         }
     },
 };
