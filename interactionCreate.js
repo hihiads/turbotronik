@@ -3,7 +3,7 @@ module.exports = {
     async execute(interaction, client) {
         if (!interaction.isCommand()) return;
 
-        const command = client.commands.get(interaction.commandName);
+        const command = client.slashCommands.get(interaction.commandName);
 
         if (!command) return;
 
@@ -13,7 +13,7 @@ module.exports = {
             console.error(`Greška prilikom izvršavanja komande ${interaction.commandName}:`, error);
             await interaction.reply({
                 content: 'Došlo je do greške prilikom izvršavanja komande.',
-                ephemeral: true, // Skriveno samo za korisnika
+                ephemeral: true,
             });
         }
     },
