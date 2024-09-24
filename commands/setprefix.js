@@ -27,7 +27,7 @@ module.exports = {
                 return message.reply('Oprosti dogodila se greška prilikom mjenjanja prefixu u tvom serveru.');
             }
 
-            message.reply(`Prefux je uspješno promijenjen u \`${newPrefix}\``);
+            message.reply(`Prefix je uspješno promijenjen u \`${newPrefix}\``);
         });
     }
 };
