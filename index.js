@@ -1,7 +1,8 @@
 const { Client, Collection, Intents } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const { Player } = require('discord-player');
+const prefixes = require('./commands/prefixes.json');
+
 const client = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
