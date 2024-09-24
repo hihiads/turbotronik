@@ -24,10 +24,10 @@ module.exports = {
         fs.writeFile('./prefixes.json', JSON.stringify(prefixes, null, 4), err => {
             if (err) {
                 console.error(err);
-                return message.reply('There was an error saving the new prefix.');
+                return message.reply('Oprosti dogodila se greška prilikom mjenjanja prefixu u tvom serveru.');
             }
 
-            message.reply(`Prefix successfully changed to \`${newPrefix}\``);
+            message.reply(`Prefux je uspješno promijenjen u \`${newPrefix}\``);
         });
     }
 };
