@@ -3,7 +3,14 @@ const fs = require('fs');
 const path = require('path');
 const prefixes = require('./commands/prefixes.json');
 
-const client = new Client ({intents:[7796]})
+const client = new Client({
+    intents: [
+        Intents.FLAGS.GUILDS,               // Potreban za osnovne guild događaje
+        Intents.FLAGS.GUILD_MESSAGES,       // Potreban za praćenje poruka
+        Intents.FLAGS.GUILD_MEMBERS,        // Potreban za praćenje promene članova
+        Intents.FLAGS.GUILD_VOICE_STATES    // Potreban za praćenje voice kanala
+    ]
+});
 
 const logEventFiles = fs.readdirSync('./logevents').filter(file => file.endsWith('.js'));
 for (const file of logEventFiles) {
