@@ -14,6 +14,15 @@ const client = new Client({
     ] 
 });
 
+const logEventFiles = fs.readdirSync('./logevents').filter(file => file.endsWith('.js'));
+for (const file of logEventFiles) {
+    const event = require(`./logevents/${file}`);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args, client));
+    } else {
+        client.on(event.name, (...args) => event.execute(...args, client));
+    }
+}
 
 // Inicijalizacija player-a
 
