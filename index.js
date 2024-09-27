@@ -3,13 +3,17 @@ const fs = require('fs');
 const path = require('path');
 const prefixes = require('./commands/prefixes.json');
 
-const client = new Client({
+const client = new Client({ 
     intents: [
-        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILDS, 
+        Intents.FLAGS.GUILD_MEMBERS, 
+        Intents.FLAGS.GUILD_BANS, 
         Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_VOICE_STATES // Obavezno za rad sa glasovnim kanalima
-    ]
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Intents.FLAGS.GUILD_VOICE_STATES
+    ] 
 });
+
 
 // Inicijalizacija player-a
 
