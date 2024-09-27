@@ -3,11 +3,14 @@ const path = require('path');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
-    name: 'setup',
+    name: 'logovi',
     description: 'Postavlja kanal za logove',
     async execute(client, message, args) {
+        // Proveri da li korisnik menzionira kanal
         const channel = message.mentions.channels.first();
-        if (!channel) return message.reply('Molim te, označi kanal!');
+        if (!channel) {
+            return message.reply('Molim te, označi kanal pomoću #kanal.');
+        }
 
         const settingsPath = path.join(__dirname, '..', 'config', 'settings.json');
         const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
